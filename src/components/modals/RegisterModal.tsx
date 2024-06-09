@@ -4,7 +4,7 @@ import Input from "../Input";
 import Modal from "../Modal";
 import useRegisterModal from "@/hooks/useRegisterModal";
 
-const LoginModal = () => {
+const RegisterModal = () => {
     const loginModal = useLoginModal()
     const registerModal = useRegisterModal()
 
@@ -85,4 +85,4 @@ const LoginModal = () => {
     )
 }
 
-export default LoginModal;
+export default RegisterModal;
