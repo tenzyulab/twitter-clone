@@ -1,9 +1,17 @@
+import useLoginModal from "@/hooks/useLoginModal"
 import { useRouter } from "next/router"
+import { useCallback } from "react"
 import { FaFeather } from "react-icons/fa"
 
 const SidebarTweetButton = () => {
-    const router = useRouter()
-    return <div onClick={() => router.push('/')}>
+    // const router = useRouter()
+    const loginModel = useLoginModal()
+
+    const onClick = useCallback( () => {
+        loginModel.onOpen()
+    }, [loginModel])
+
+    return <div onClick={onClick}>
         <div className="
         lg:hidden
         mt-6
