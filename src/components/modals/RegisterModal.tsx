@@ -3,6 +3,9 @@ import { useCallback, useState } from "react";
 import Input from "../Input";
 import Modal from "../Modal";
 import useRegisterModal from "@/hooks/useRegisterModal";
+import axios from "axios";
+import toast from "react-hot-toast";
+import { signIn } from "next-auth/react";
 
 const RegisterModal = () => {
     const loginModal = useLoginModal()
@@ -20,18 +23,31 @@ const RegisterModal = () => {
         registerModal.onClose()
         loginModal.onOpen()
     }, [registerModal, loginModal, isLoading])
+
     const onSubmit = useCallback(async () => {
         try {
             setIsLoading(true)
-            // TODO: add log in
+
+            await axios.post('/api/register', {
+                email, password, name, username
+            })
+
+            toast.success('Account created.')
+
+            signIn('credentials', {
+                email,
+                password
+            })
+
             registerModal.onClose()
         } catch (error) {
             console.log(error)
+            toast.error('Something went wrong')
         } finally {
             setIsLoading(false)
         }
 
-    }, [registerModal])
+    }, [registerModal, email, password, name, username])
 
 
     const bodyContent = (
@@ -55,6 +71,7 @@ const RegisterModal = () => {
                 placeholder="Password"
                 onChange={(e) => setPassword(e.target.value)}
                 value={password}
+                type="password"
                 disabled={isLoading} />
         </div>
     )
@@ -66,7 +83,7 @@ const RegisterModal = () => {
                 text-white
                 cursor-pointer
                 hover:underline"
-                onClick={onToggle}
+                    onClick={onToggle}
                 > Sign in</span>
             </p>
         </div>
